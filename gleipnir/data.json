@@ -2922,7 +2922,7 @@
                 "content": [
                     {
                         "node": "text",
-                        "content": "Dakuwanga : "
+                        "content": "Dakuwanga : Shark demigod"
                     }
                 ]
             }
@@ -3096,18 +3096,6 @@
                     {
                         "node": "text",
                         "content": "."
-                    }
-                ]
-            },
-            {
-                "node": "paragraph",
-                "style": {
-                    "text_align": "center"
-                },
-                "content": [
-                    {
-                        "node": "image",
-                        "src": "the-leviathan-img-002.png"
                     }
                 ]
             },
