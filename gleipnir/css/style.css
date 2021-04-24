@@ -1,0 +1,340 @@
+@font-face {
+    font-family: 'Space Quest';
+    src: url(../fonts/spacequest.otf);
+}
+
+@font-face {
+    font-family: 'Space Quest';
+    src: url(../fonts/spacequest-italics.otf);
+    font-style: italic;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --base-color-100: hsl(0, 0%, 10%);
+    --base-color-200: hsl(0, 0%, 15%);
+    --base-color-400: hsl(0, 0%, 21%);
+    --base-color-600: hsl(0, 0%, 40%);
+    --color-grey-400: hsl(0, 0%, 49%);
+    --color-yellow-400: hsl(37, 100%, 68%);
+    --color-yellow-300: hsl(37, 100%, 50%);
+    --color-yellow-200: hsl(37, 100%, 40%);
+    --color-yellow-100: hsl(37, 100%, 20%);
+    --primary-color-400: hsl(0, 0%, 90%);
+
+    --background: linear-gradient(var(--base-color-400) 70%, var(--base-color-100));
+    --background: var(--base-color-400);
+    --background-color: var(--base-color-400);
+
+    --logo-bottom-offset: 30vh;
+
+    --header-font: 'Space Quest', monospace;
+    --primary-font: 'Source Sans Pro', sans-serif;
+
+    --primary-font-color: var(--primary-color-400);
+
+    --highlight-color: var(--color-yellow-100);
+
+    --link-color: var(--color-yellow-300);
+    --link-visited-color: var(--color-yellow-200);
+
+    --page-section-margin: 50px;
+    --page-padding-bottom: 70px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --logo-bottom-offset: 5vh;
+    }
+}
+
+::selection {
+    background: var(--highlight-color);
+}
+
+::-moz-selection {
+    background: var(--highlight-color);
+}
+
+html {
+    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+body {
+    background-color: var(--background-color);
+    min-height: 100vh;
+
+    font-family: var(--primary-font);
+    color: var(--primary-font-color);
+
+    overflow-y: scroll;
+}
+
+.bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: -10000;
+
+    background: var(--background);
+}
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+
+    z-index: 0;
+}
+
+.loaderContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: opacity 1s;
+}
+
+.loaderContainer.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loaderText {
+    width: calc(100% - 80px);
+    max-width: 800px;
+    padding-bottom: var(--logo-bottom-offset);
+
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+}
+
+.loaderText .textBase {
+    fill: var(--base-color-600);
+}
+
+.loaderText .textFill {
+    fill: var(--color-yellow-400);
+}
+
+.contentContainer.hidden {
+    opacity: 0;
+}
+
+.contentContainer {
+    transition: opacity 1s;
+}
+
+.contentTitleContainer {
+    width: 100%;
+    height: calc(100vh - var(--logo-bottom-offset) - 3px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.contentTitleLogoContainer {
+    width: calc(100% - 80px);
+    max-width: 800px;
+
+    position: relative;
+}
+
+.contentTitleLogo {
+}
+
+.contentTitleSubtitle {
+    position: absolute;
+    top: calc(100% + 0.2rem);
+    left: 0;
+    right: 0;
+
+    font-family: var(--header-font);
+    color: var(--primary-font-color);
+    font-size: min(6vw, 60px);
+    text-align: center;
+    letter-spacing: 0.04em;
+}
+
+.sectionContentContainer {
+    padding: 0 20px var(--page-padding-bottom) 20px;
+}
+
+.sectionContentRow {
+    display: flex;
+    justify-content: center;
+
+    transition: opacity 0.5s;
+}
+
+.sectionContentRow.hidden {
+    opacity: 0;
+}
+
+.sectionContentRow:not(:last-child) {
+    margin-bottom: var(--page-section-margin);
+}
+
+.sectionContentRow:last-child:not(:first-child) {
+    min-height: calc(100vh - var(--page-padding-bottom) - var(--page-section-margin));
+}
+
+.sectionContent {
+    width: 100%;
+    max-width: 900px;
+}
+
+.sectionContent h1,
+.sectionContent h2,
+.sectionContent h3,
+.sectionContent h4,
+.sectionContent h5,
+.sectionContent h6 {
+    font-family: var(--header-font);
+    margin-bottom: 0.3em;
+    letter-spacing: 0.04em;
+}
+
+.sectionContent h1 {
+    font-size: 2rem;
+
+    text-decoration: underline;
+    text-decoration-color: var(--color-yellow-300);
+    text-underline-offset: 0.13rem;
+    line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+    .sectionContent h1 {
+        font-size: 1.6rem;
+    }
+}
+
+.sectionContent h2 { font-size: 1.6rem; }
+.sectionContent h3 { font-size: 1.4rem; }
+.sectionContent h4 { font-size: 1.2rem; }
+.sectionContent h5 { font-size: 1rem; }
+.sectionContent h6 { font-size: 1rem; font-style: italic; }
+
+.sectionContent h1:not(:first-child),
+.sectionContent h2:not(:first-child),
+.sectionContent h3:not(:first-child),
+.sectionContent h4:not(:first-child),
+.sectionContent h5:not(:first-child),
+.sectionContent h6:not(:first-child) {
+    margin-top: 2rem;
+}
+
+.sectionContent h2 + p,
+.sectionContent h3 + p,
+.sectionContent h4 + p,
+.sectionContent h5 + p,
+.sectionContent h6 + p {
+    margin-top: 0.4rem;
+}
+
+.sectionContent > * + * {
+    margin-top: 1rem;
+}
+
+.sectionContent p,
+.sectionContent li {
+    line-height: 1.6;
+}
+
+.sectionContent ol > li {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+
+.sectionContent ul > li {
+    position: relative;
+    padding-left: 1.4rem;
+}
+
+.sectionContent ul > li::before {
+    content: '';
+    display: inline-block;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+
+    width: 1rem;
+    height: 1rem;
+    background-image: url('../base-imgs/bullet-point.svg');
+    background-size: contain;
+}
+
+.sectionContent li > ol,
+.sectionContent li > ul {
+    /* Indented nesting */
+    padding-left: 1rem;
+}
+
+.sectionContent b {
+    font-weight: 700;
+}
+
+.sectionContent i {
+    font-style: italic;
+}
+
+.sectionContent u {
+    text-decoration: underline;
+}
+
+.sectionContent del {
+    text-decoration: line-through;
+}
+
+.sectionContent sub {
+    vertical-align: sub;
+    font-size: smaller;
+}
+
+.sectionContent sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
+.sectionContent img {
+    max-width: 70%;
+}
+
+.sectionContent a {
+    --link-brightness: 100%;
+    --link-grayscale: 0%;
+
+    color: var(--link-color);
+
+    text-decoration: underline;
+    text-decoration-color: var(--link-color);
+    text-underline-offset: 0.07rem;
+
+    filter: brightness(var(--link-brightness)) grayscale(var(--link-grayscale));
+    transition: filter 0.1s;
+}
+
+.sectionContent a:hover {
+    --link-brightness: 80%;
+}
