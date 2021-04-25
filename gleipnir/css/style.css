@@ -23,21 +23,15 @@
     --color-yellow-100: hsl(37, 100%, 20%);
     --primary-color-400: hsl(0, 0%, 90%);
 
-    --background: linear-gradient(var(--base-color-400) 70%, var(--base-color-100));
-    --background: var(--base-color-400);
     --background-color: var(--base-color-400);
-
-    --logo-bottom-offset: 30vh;
 
     --header-font: 'Space Quest', monospace;
     --primary-font: 'Source Sans Pro', sans-serif;
 
     --primary-font-color: var(--primary-color-400);
-
+    --h1-underline-color: var(--color-yellow-300);
     --highlight-color: var(--color-yellow-100);
-
     --link-color: var(--color-yellow-300);
-    --link-visited-color: var(--color-yellow-200);
 
     --page-section-margin: 50px;
     --page-padding-bottom: 70px;
@@ -45,9 +39,10 @@
 
 @media (max-width: 768px) {
     :root {
-        --logo-bottom-offset: 5vh;
+        --page-section-margin: 30px;
     }
 }
+
 
 ::selection {
     background: var(--highlight-color);
@@ -93,7 +88,8 @@ body {
     width: 100%;
     min-height: 100vh;
 
-    margin-top: 35vh;
+    padding-top: 35vh;
+    padding-top: calc(50vh - ((100vw - 80px) / 4.214 / 2)); /* 45vh from top, minus (logo aspect ratio * width of logo) to get height of logo */
 }
 
 .titleContainer {
@@ -177,7 +173,7 @@ body {
     font-size: 2rem;
 
     text-decoration: underline;
-    text-decoration-color: var(--color-yellow-300);
+    text-decoration-color: var(--h1-underline-color);
     text-underline-offset: 0.13rem;
     line-height: 1.1;
 }

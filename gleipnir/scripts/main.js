@@ -62,8 +62,11 @@ function scrollToSection(index) {
     if (index < 0) {
         index = sectionContentContainer.children.length + index;
     }
-    const bottomSection = sectionContentContainer.children[index];
-    window.requestAnimationFrame(() => window.scrollTo({ top: bottomSection.offsetTop - (isOnMobile() ? 20 : 30), behavior: 'smooth' }));
+    scrollToElement(sectionContentContainer.children[index]);
+}
+
+function scrollToElement(elem) {
+    window.requestAnimationFrame(() => window.scrollTo({ top: elem.offsetTop - (isOnMobile() ? 30 : 50), behavior: 'smooth' }));
 }
 
 function addSectionToContainer(sectionElem) {
@@ -124,36 +127,41 @@ function renderFirstSection() {
     const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     section.querySelector('.sectionContent').append(
         document.querySelector('#firstSectionContent').content.cloneNode(true)
-    )
+    );
 
-    section.querySelector('a[data-link-type="view-start"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSection(sectionIds[0], section, true);
-        scrollToSection(-1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-start"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSection(sectionIds[0], section, true);
+            scrollToSection(-1);
+        }));
 
-    section.querySelector('a[data-link-type="view-all"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionContentPage(false));
-        addSectionToContainer(renderSectionAllContent());
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-all"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionContentPage(false));
+            addSectionToContainer(renderSectionAllContent());
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="view-content-page"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionContentPage(true));
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-content-page"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionContentPage(true));
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="view-test-styles"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionTestStyle());
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-test-styles"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionTestStyle());
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="clear-content"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="clear-content"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+        }));
 
     return section;
 }
@@ -239,6 +247,11 @@ function renderSectionContentPage(isInteractiveMode) {
                     true
                 );
                 scrollToSection(-1);
+            });
+        } else {
+            newAnchorElem.addEventListener('click', (event) => {
+                event.preventDefault();
+                scrollToElement(document.querySelector(`#${sectionId}`));
             });
         }
 

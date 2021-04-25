@@ -1,0 +1,37 @@
+:root {
+    --background-color: transparent;
+    
+    --primary-font-color: black;
+    --h1-underline-color: black;
+    --link-color: black;
+}
+
+body {
+    background: none;
+}
+
+.contentContainer {
+    padding-top: 0;
+}
+
+.titleContainer {
+    margin-bottom: 3rem;
+}
+
+.sectionContentContainer {
+    margin: 0;
+    padding: 0;
+}
+
+.sectionContentContainer .sectionContentRow:first-child {
+    /* Don't print the start options */
+    display: none;
+}
+
+.sectionContentRow:last-child:not(:first-child) {
+    min-height: auto;
+}
+
+.sectionContent {
+    max-width: none;
+}
