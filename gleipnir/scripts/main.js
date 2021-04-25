@@ -131,6 +131,7 @@ function renderFirstSection() {
 
     Array.from(section.querySelectorAll('a[data-link-type="view-start"]'))
         .forEach(elem => elem.addEventListener('click', () => {
+            event.preventDefault();
             removeAllNextSiblings(sectionContentContainer.children[0]);
             addSection(sectionIds[0], section, true);
             scrollToSection(-1);
@@ -138,6 +139,7 @@ function renderFirstSection() {
 
     Array.from(section.querySelectorAll('a[data-link-type="view-all"]'))
         .forEach(elem => elem.addEventListener('click', () => {
+            event.preventDefault();
             removeAllNextSiblings(sectionContentContainer.children[0]);
             addSectionToContainer(renderSectionContentPage(false));
             addSectionToContainer(renderSectionAllContent());
@@ -146,6 +148,7 @@ function renderFirstSection() {
 
     Array.from(section.querySelectorAll('a[data-link-type="view-content-page"]'))
         .forEach(elem => elem.addEventListener('click', () => {
+            event.preventDefault();
             removeAllNextSiblings(sectionContentContainer.children[0]);
             addSectionToContainer(renderSectionContentPage(true));
             scrollToSection(1);
@@ -153,6 +156,7 @@ function renderFirstSection() {
 
     Array.from(section.querySelectorAll('a[data-link-type="view-test-styles"]'))
         .forEach(elem => elem.addEventListener('click', () => {
+            event.preventDefault();
             removeAllNextSiblings(sectionContentContainer.children[0]);
             addSectionToContainer(renderSectionTestStyle());
             scrollToSection(-1);
@@ -160,6 +164,7 @@ function renderFirstSection() {
 
     Array.from(section.querySelectorAll('a[data-link-type="clear-content"]'))
         .forEach(elem => elem.addEventListener('click', () => {
+            event.preventDefault();
             removeAllNextSiblings(sectionContentContainer.children[0]);
         }));
 
