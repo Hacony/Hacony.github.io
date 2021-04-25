@@ -155,13 +155,28 @@ function renderFirstSection() {
         .forEach(elem => elem.addEventListener('click', () => {
             removeAllNextSiblings(sectionContentContainer.children[0]);
             addSectionToContainer(renderSectionTestStyle());
-            scrollToSection(1);
+            scrollToSection(-1);
         }));
 
     Array.from(section.querySelectorAll('a[data-link-type="clear-content"]'))
         .forEach(elem => elem.addEventListener('click', () => {
             removeAllNextSiblings(sectionContentContainer.children[0]);
         }));
+
+    Array.from(section.querySelectorAll('a'))
+        .forEach(elem => {
+            const splittedUrl = elem.href.split('#');
+            if (splittedUrl.length == 1 || splittedUrl[1].length == 0) {
+                return;
+            }
+            const sectionId = splittedUrl[1];
+            elem.addEventListener('click', (event) => {
+                event.preventDefault();
+                removeAllNextSiblings(sectionContentContainer.children[0]);
+                addSection(sectionId);
+                scrollToSection(-1);
+            });
+        });
 
     return section;
 }
@@ -300,7 +315,7 @@ function renderSectionElem(json_data, isInteractiveMode) {
                 }
             });
         }
-        if (json_data.href && isInteractiveMode) {
+        if (json_data.href && (isInteractiveMode || json_data.href.charAt(0) != '#')) {
             const anchorNode = document.createElement('a');
             anchorNode.href = json_data.href;
             anchorNode.append(elem);
@@ -315,6 +330,10 @@ function renderSectionElem(json_data, isInteractiveMode) {
                     );
                     scrollToSection(-1);
                 });
+            } else {
+                // external link
+                anchorNode.setAttribute('target', '_blank');
+                anchorNode.rel = 'noreferrer';
             }
         }
         return elem;
@@ -349,7 +368,7 @@ async function init() {
     function calcLoaderHeight(p) {
         const imgHeight = 811;
         const marginTop = 122;
-        const marginBottom = 63;
+        const marginBottom = 63 + 40; // +40 so the initial line cuts through the text
 
         if (p >= 1) {
             return 1;
@@ -412,9 +431,7 @@ async function init() {
         sectionContentContainer.lastElementChild.remove();
     }
 
-    // addSectionToContainer(renderSectionTestStyle());
     addSectionToContainer(renderFirstSection());
-    // addSectionToContainer(renderSectionAllContent());
 }
 
 init();
