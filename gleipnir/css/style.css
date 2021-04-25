@@ -199,12 +199,22 @@ body {
     margin-top: 2rem;
 }
 
+.sectionContent h1 + p,
 .sectionContent h2 + p,
 .sectionContent h3 + p,
 .sectionContent h4 + p,
 .sectionContent h5 + p,
 .sectionContent h6 + p {
     margin-top: 0.4rem;
+}
+
+.sectionContent h1 + p > img,
+.sectionContent h2 + p > img,
+.sectionContent h3 + p > img,
+.sectionContent h4 + p > img,
+.sectionContent h5 + p > img,
+.sectionContent h6 + p > img {
+    margin-top: 1rem;
 }
 
 .sectionContent > * + * {
