@@ -299,7 +299,7 @@ function renderSectionElem(json_data, isInteractiveMode) {
         return json_data.map(childNode => renderSectionElem(childNode, isInteractiveMode));
     } else if (json_data.node == 'paragraph') {
         const elem = document.createElement('p');
-        if (json_data.style?.text_align) {
+        if (json_data.style?.text_align && json_data.style.text_align != 'left') {
             elem.style.textAlign = json_data.style.text_align;
         }
         elem.append(...renderSectionElem(json_data.content, isInteractiveMode));
