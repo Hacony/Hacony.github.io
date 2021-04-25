@@ -39,3 +39,7 @@ body {
 .sectionContent ul > li::before {
     filter: invert(100%);
 }
+
+.sectionContent a {
+    text-decoration: none;
+}

@@ -112,9 +112,7 @@ function renderSectionContent(sectionData, isInteractiveMode) {
     
     const headerLevel = (isInteractiveMode ? 1 : level);
     const headerNode = document.createElement(`h${headerLevel}`);
-    if (!isInteractiveMode) {
-        headerNode.id = id;
-    }
+    headerNode.id = id;
     headerNode.append(title);
     contentElems.push(headerNode);
 
@@ -320,21 +318,29 @@ function renderSectionElem(json_data, isInteractiveMode) {
                 }
             });
         }
-        if (json_data.href && (isInteractiveMode || json_data.href.charAt(0) != '#')) {
+        if (json_data.href) {
             const anchorNode = document.createElement('a');
             anchorNode.href = json_data.href;
             anchorNode.append(elem);
             elem = anchorNode;
 
             if (json_data.href.charAt(0) == '#') {
-                anchorNode.addEventListener('click', () => {
-                    addSection(
-                        json_data.href.substr(1),
-                        anchorNode.closest('.sectionContentRow'),
-                        isInteractiveMode
-                    );
-                    scrollToSection(-1);
-                });
+                if (isInteractiveMode) {
+                    anchorNode.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        addSection(
+                            json_data.href.substr(1),
+                            anchorNode.closest('.sectionContentRow'),
+                            isInteractiveMode
+                        );
+                        scrollToSection(-1);
+                    });
+                } else {
+                    anchorNode.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        scrollToElement(document.querySelector(json_data.href));
+                    });
+                }
             } else {
                 // external link
                 anchorNode.setAttribute('target', '_blank');
