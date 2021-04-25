@@ -35,3 +35,7 @@ body {
 .sectionContent {
     max-width: none;
 }
+
+.sectionContent ul > li::before {
+    filter: invert(100%);
+}
