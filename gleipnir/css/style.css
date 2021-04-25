@@ -23,21 +23,15 @@
     --color-yellow-100: hsl(37, 100%, 20%);
     --primary-color-400: hsl(0, 0%, 90%);
 
-    --background: linear-gradient(var(--base-color-400) 70%, var(--base-color-100));
-    --background: var(--base-color-400);
     --background-color: var(--base-color-400);
-
-    --logo-bottom-offset: 30vh;
 
     --header-font: 'Space Quest', monospace;
     --primary-font: 'Source Sans Pro', sans-serif;
 
     --primary-font-color: var(--primary-color-400);
-
+    --h1-underline-color: var(--color-yellow-300);
     --highlight-color: var(--color-yellow-100);
-
     --link-color: var(--color-yellow-300);
-    --link-visited-color: var(--color-yellow-200);
 
     --page-section-margin: 50px;
     --page-padding-bottom: 70px;
@@ -45,9 +39,10 @@
 
 @media (max-width: 768px) {
     :root {
-        --logo-bottom-offset: 5vh;
+        --page-section-margin: 30px;
     }
 }
+
 
 ::selection {
     background: var(--highlight-color);
@@ -89,89 +84,50 @@ body {
     background: var(--background);
 }
 
-#content {
+.contentContainer {
     width: 100%;
     min-height: 100vh;
 
-    z-index: 0;
+    padding-top: 35vh;
+    padding-top: calc(50vh - ((100vw - 80px) / 4.214 / 2)); /* 45vh from top, minus (logo aspect ratio * width of logo) to get height of logo */
 }
 
-.loaderContainer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    z-index: 1;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    transition: opacity 1s;
-}
-
-.loaderContainer.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.loaderText {
+.titleContainer {
+    margin: 0 auto 20vh auto;
     width: calc(100% - 80px);
     max-width: 800px;
-    padding-bottom: var(--logo-bottom-offset);
-
-    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
 }
 
-.loaderText .textBase {
+.titleLogo .textBase {
     fill: var(--base-color-600);
 }
 
-.loaderText .textFill {
+.titleLogo .textFill {
     fill: var(--color-yellow-400);
 }
 
-.contentContainer.hidden {
-    opacity: 0;
+.titleLogo .textReady {
+    fill: var(--primary-font-color);
+
+    transition: fill-opacity 1s;
 }
 
-.contentContainer {
-    transition: opacity 1s;
+.titleLogo .textReady.hidden {
+    fill-opacity: 0;
 }
 
-.contentTitleContainer {
-    width: 100%;
-    height: calc(100vh - var(--logo-bottom-offset) - 3px);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.contentTitleLogoContainer {
-    width: calc(100% - 80px);
-    max-width: 800px;
-
-    position: relative;
-}
-
-.contentTitleLogo {
-}
-
-.contentTitleSubtitle {
-    position: absolute;
-    top: calc(100% + 0.2rem);
-    left: 0;
-    right: 0;
-
+.subtitle {
     font-family: var(--header-font);
     color: var(--primary-font-color);
     font-size: min(6vw, 60px);
     text-align: center;
     letter-spacing: 0.04em;
+
+    transition: opacity 1s;
+}
+
+.subtitle.hidden {
+    opacity: 0;
 }
 
 .sectionContentContainer {
@@ -217,7 +173,7 @@ body {
     font-size: 2rem;
 
     text-decoration: underline;
-    text-decoration-color: var(--color-yellow-300);
+    text-decoration-color: var(--h1-underline-color);
     text-underline-offset: 0.13rem;
     line-height: 1.1;
 }
@@ -276,7 +232,7 @@ body {
 
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-46%);
     left: 0;
 
     width: 1rem;

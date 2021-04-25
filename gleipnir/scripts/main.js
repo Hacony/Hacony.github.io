@@ -62,16 +62,28 @@ function scrollToSection(index) {
     if (index < 0) {
         index = sectionContentContainer.children.length + index;
     }
-    const bottomSection = sectionContentContainer.children[index];
-    window.requestAnimationFrame(() => window.scrollTo({ top: bottomSection.offsetTop - (isOnMobile() ? 20 : 30), behavior: 'smooth' }));
+    scrollToElement(sectionContentContainer.children[index]);
+}
+
+function scrollToElement(elem) {
+    window.requestAnimationFrame(() => window.scrollTo({ top: elem.offsetTop - (isOnMobile() ? 30 : 50), behavior: 'smooth' }));
 }
 
 function addSectionToContainer(sectionElem) {
     if (!skipAnimations) {
         sectionElem.classList.add('hidden');
+
+        // Animate fade in
+        var observer = new MutationObserver(() => {
+            if (sectionContentContainer.contains(sectionElem)) {
+                setTimeout(() => sectionElem.classList.remove('hidden'), 100);
+                observer.disconnect();
+            }
+        });     
+        observer.observe(sectionContentContainer, { childList: true });
     }
+
     sectionContentContainer.appendChild(sectionElem);
-    window.requestAnimationFrame(() => sectionElem.classList.remove('hidden'));
 }
 
 function addSection(sectionId, parentNode, isInteractiveMode) {
@@ -86,8 +98,9 @@ function addSection(sectionId, parentNode, isInteractiveMode) {
     const sectionElem = renderSection(sectionData, isInteractiveMode);
     addSectionToContainer(sectionElem);
 }
+
 function renderSection(sectionData, isInteractiveMode) {
-    const section = document.querySelector('#docContentTemplate').content.cloneNode(true).children[0];
+    const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     const sectionContent = renderSectionContent(sectionData, isInteractiveMode);
     section.querySelector('.sectionContent').append(...sectionContent);
     return section;
@@ -99,7 +112,9 @@ function renderSectionContent(sectionData, isInteractiveMode) {
     
     const headerLevel = (isInteractiveMode ? 1 : level);
     const headerNode = document.createElement(`h${headerLevel}`);
-    // headerNode.id = id;
+    if (!isInteractiveMode) {
+        headerNode.id = id;
+    }
     headerNode.append(title);
     contentElems.push(headerNode);
 
@@ -109,44 +124,50 @@ function renderSectionContent(sectionData, isInteractiveMode) {
 }
 
 function renderFirstSection() {
-    const section = document.querySelector('#docContentTemplate').content.cloneNode(true).children[0];
+    const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     section.querySelector('.sectionContent').append(
         document.querySelector('#firstSectionContent').content.cloneNode(true)
-    )
+    );
 
-    section.querySelector('a[data-link-type="view-start"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSection(sectionIds[0], section, true);
-        scrollToSection(-1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-start"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSection(sectionIds[0], section, true);
+            scrollToSection(-1);
+        }));
 
-    section.querySelector('a[data-link-type="view-all"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionAllContent());
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-all"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionContentPage(false));
+            addSectionToContainer(renderSectionAllContent());
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="view-content-page"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionContentPage());
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-content-page"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionContentPage(true));
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="view-test-styles"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-        addSectionToContainer(renderSectionTestStyle());
-        scrollToSection(1);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="view-test-styles"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+            addSectionToContainer(renderSectionTestStyle());
+            scrollToSection(1);
+        }));
 
-    section.querySelector('a[data-link-type="clear-content"]').addEventListener('click', () => {
-        removeAllNextSiblings(sectionContentContainer.children[0]);
-    });
+    Array.from(section.querySelectorAll('a[data-link-type="clear-content"]'))
+        .forEach(elem => elem.addEventListener('click', () => {
+            removeAllNextSiblings(sectionContentContainer.children[0]);
+        }));
 
     return section;
 }
 
 function renderSectionTestStyle() {
-    const section = document.querySelector('#docContentTemplate').content.cloneNode(true).children[0];
+    const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     const sectionContent = [];
     let newNode;
     for (var i = 1; i <= 6; i++) {
@@ -191,7 +212,7 @@ function renderSectionTestStyle() {
 }
 
 function renderSectionAllContent() {
-    const section = document.querySelector('#docContentTemplate').content.cloneNode(true).children[0];
+    const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     const sectionContent = section.querySelector('.sectionContent');
     sectionIds.forEach(sectionId => {
         const sectionData = sectionDataMap[sectionId];
@@ -200,8 +221,8 @@ function renderSectionAllContent() {
     return section;
 }
 
-function renderSectionContentPage() {
-    const section = document.querySelector('#docContentTemplate').content.cloneNode(true).children[0];
+function renderSectionContentPage(isInteractiveMode) {
+    const section = document.querySelector('#sectionContentTemplate').content.cloneNode(true).children[0];
     const sectionContent = section.querySelector('.sectionContent');
     
     const header = document.createElement('h1');
@@ -218,14 +239,21 @@ function renderSectionContentPage() {
         const newAnchorElem = document.createElement('a');
         newAnchorElem.innerHTML = title;
         newAnchorElem.href = `#${sectionId}`;
-        newAnchorElem.addEventListener('click', () => {
-            addSection(
-                sectionId,
-                newAnchorElem.closest('.sectionContentRow'),
-                true
-            );
-            scrollToSection(-1);
-        });
+        if (isInteractiveMode) {
+            newAnchorElem.addEventListener('click', () => {
+                addSection(
+                    sectionId,
+                    newAnchorElem.closest('.sectionContentRow'),
+                    true
+                );
+                scrollToSection(-1);
+            });
+        } else {
+            newAnchorElem.addEventListener('click', (event) => {
+                event.preventDefault();
+                scrollToElement(document.querySelector(`#${sectionId}`));
+            });
+        }
 
         const newLiElem = document.createElement('li');
         newLiElem.append(newAnchorElem);
@@ -367,13 +395,14 @@ async function init() {
         window.scrollTo(0, 0);
     }
 
-    let rawDocData = await loadData(dataJsonUrl, progress => { loaderProgress = progress; })
+    const rawDocData = await loadData(dataJsonUrl, progress => { loaderProgress = progress; });
     skipAnimations || await sleep(1000);
     
-    loaderDiv.classList.add('hidden');
-    skipAnimations || await sleep(0);
-    contentDiv.classList.remove('hidden');
-    
+    document.querySelector('#loaderTextReady').classList.remove('hidden');
+    skipAnimations || await sleep(500);
+    document.querySelector('#subtitle').classList.remove('hidden');
+    skipAnimations || await sleep(500);
+
     const docData = JSON.parse(rawDocData);
     sectionIds = docData.map(sectionData => sectionData.id);
     sectionDataMap = {};
