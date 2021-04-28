@@ -1,5 +1,8 @@
-// Array map polyfill
+// Array.map polyfill
 Array.prototype.map||(Array.prototype.map=function(r){var t,n,o;if(null==this)throw new TypeError("this is null or not defined");var e=Object(this),i=e.length>>>0;if("function"!=typeof r)throw new TypeError(r+" is not a function");for(arguments.length>1&&(t=arguments[1]),n=new Array(i),o=0;o<i;){var a,p;o in e&&(a=e[o],p=r.call(t,a,o,e),n[o]=p),o++}return n});
+
+// Array.each polyfill
+Array.prototype.forEach||(Array.prototype.forEach=function(r,o){if(null==this)throw new TypeError("Array.prototype.forEach called on null or undefined");var t,n,e=Object(this),a=e.length>>>0;if("function"!=typeof r)throw new TypeError(r+" is not a function");for(arguments.length>1&&(t=o),n=0;n<a;){var f;n in e&&(f=e[n],r.call(t,f,n,e)),n++}});
 
 (async () => {
 const dataJsonUrl = 'data.json';
