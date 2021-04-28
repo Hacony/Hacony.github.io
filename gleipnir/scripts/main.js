@@ -363,6 +363,12 @@ function renderSectionElem(json_data, isInteractiveMode) {
         }
         elem.append(...renderSectionElem(json_data.content, isInteractiveMode));
         return elem;
+    } else if (json_data.node == 'break') {
+        return document.createElement('br');
+    } else if (json_data.node == 'html') {
+        const template = document.createElement('template');
+        template.innerHTML = json_data.content;
+        return template.content.cloneNode(true);
     } else {
         console.error(json_data);
         throw 'Unrecognised json data'
