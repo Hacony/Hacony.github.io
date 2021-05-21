@@ -85,7 +85,7 @@ function addSectionToContainer(sectionElem) {
                 setTimeout(() => sectionElem.classList.remove('hidden'), 100);
                 observer.disconnect();
             }
-        });     
+        });
         observer.observe(sectionContentContainer, { childList: true });
     }
 
